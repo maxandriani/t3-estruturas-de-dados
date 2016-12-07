@@ -1,10 +1,12 @@
-#import <iostream>
-#import <stdlib.h>
+#include <iostream>
+#include <stdlib.h>
+
+using namespace std;
 
 struct Ticket {
 	int number;
-	struct Ticket next;
-}
+	struct Ticket *next;
+};
 
 Ticket* generate_ticket( int number );
 Ticket* push_ticket( Ticket* ticket, Ticket *head );
@@ -15,7 +17,7 @@ void		print_header();
 void		print_menu( Ticket *queue, int last_number );
 void 		ui_home( Ticket *queue, int last_number );
 void 		ui_queue_in( Ticket *queue, int last_number );
-void 		ui_queue_out( Ticket *queue. int last_number );
+void 		ui_queue_out( Ticket *queue, int last_number );
 
 int main (){
 	Ticket *queue = NULL;
@@ -88,7 +90,7 @@ void		print_header(){
 void		print_menu( Ticket *queue, int last_number ){
 	char k;
 
-	cout << "Escolha uma funcao: " << endl;
+	cout << "Escolha uma funcao: " << endl
 			 << "(G) Gerar uma senha de atendimento" << endl
 			 << "(P) Proximo atendimento" << endl
 			 << "(S) Sair" << endl;
@@ -119,7 +121,7 @@ void 		ui_home( Ticket *queue, int last_number ){
 
 	cout << "Fila atual: ";
 	print_ticket_queue(queue);
-	cout << endl; << endl;
+	cout << endl << endl;
 
 	print_menu( queue, last_number );
 }
@@ -136,7 +138,7 @@ void 		ui_queue_in( Ticket *queue, int last_number ){
 	cout << "Sua senha para atendimento e: ";
 	print_ticket(node);
 	cout << endl;
-	system('pause');
+	system("pause");
 
 	ui_home( queue, last_number );
 }
