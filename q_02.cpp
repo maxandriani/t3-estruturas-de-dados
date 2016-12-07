@@ -1,6 +1,6 @@
-#import <iostream>
-#import <stdlib.h>
-#import <string>
+#include <iostream>
+#include <stdlib.h>
+#include <string>
 
 #define SLOTS 10;
 
