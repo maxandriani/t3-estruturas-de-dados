@@ -1,8 +1,10 @@
-#include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
 
 #define SLOTS 10
+
+using namespace std;
 
 struct Car {
 	string plate;
@@ -16,7 +18,7 @@ struct CarQueue {
 };
 
 CarQueue  *car_queue_build( string plate );
-CarQueue 	*car_queue_push( CarQueue *head, CarQueue slot );
+CarQueue 	*car_queue_push( CarQueue *head, CarQueue *slot );
 CarQueue 	*car_queue_pop( CarQueue *head );
 int				car_queue_sizeof( CarQueue *head );
 void			car_queue_print( CarQueue *head );
@@ -42,15 +44,15 @@ CarQueue  *car_queue_build( string plate ) {
 	CarQueue *node = NULL;
 	CarQueue *q = (CarQueue*) malloc(sizeof(CarQueue));
 	q->next = NULL;
-	q->pref = NULL;
-	q->car.plate
+	q->prev = NULL;
+	q->car.plate = plate;
 	q->car.attempts = 0;
 	return q;
 }
 
-CarQueue 	*car_queue_push( CarQueue *head, CarQueue slot ) {
-	if (head != NULL){
-		node = head;
+CarQueue 	*car_queue_push( CarQueue *head, CarQueue *slot ) {
+	CarQueue *node = head;
+	if (node != NULL){
 		while(node->next != NULL){
 			node = node->next;
 		}
@@ -101,11 +103,12 @@ void			car_queue_print( CarQueue *head ){
 	while(node != NULL){
 		cout << "[P: " << node->car.plate << "|A: " << node->car.attempts << "]";
 		if (node->next != NULL){
-			cout " ";
+			cout << " ";
 		} 
 		node = node->next;
 	}
-	cout << "}" << endl;
+	cout << " }" << endl;
+	
 }
 
 void			ui_head(){
@@ -137,14 +140,15 @@ bool			ui_menu( CarQueue **parking, CarQueue **street ){
 	return 0;
 }
 bool			ui_start( CarQueue **parking, CarQueue **street ){
-	bool = k;
+	bool k;
 
 	ui_head();
 	return ui_menu( parking, street );
 }
 bool			ui_add_car( CarQueue **parking, CarQueue **street ){
-	string 	plate;
-	int			queue_size = car_queue_sizeof((*parking));
+	string 	 plate;
+	CarQueue *c;
+	int			 queue_size = car_queue_sizeof((*parking));
 
 	ui_head();
 
@@ -154,7 +158,8 @@ bool			ui_add_car( CarQueue **parking, CarQueue **street ){
 		cout << "Informe a placa do veiculo (sem espacos): ";
 		cin >> plate;
 
-		*parking = car_queue_pop( *parking, plate );
+		c = car_queue_build( plate );
+		*parking = car_queue_push( *parking, c );
 
 		car_queue_print( *parking ); 
 	}
@@ -194,7 +199,7 @@ bool			ui_remove_car( CarQueue **parking, CarQueue **street ){
 	for (int x=0; x<=position; x++){
 		node = car_queue_pop( *parking );
 		// Check empty
-		if (node == *paring){
+		if (node == *parking){
 			*parking = NULL;
 		}
 		// if it is the car...
@@ -206,7 +211,7 @@ bool			ui_remove_car( CarQueue **parking, CarQueue **street ){
 		}
 	}
 
-	cout << "Carro [" << node->car->plate << "] foi removido. Houveram " << node->car->attempts << " manobras enquanto estava estacionado." << endl;
+	cout << "Carro [" << node->car.plate << "] foi removido. Houveram " << node->car.attempts << " manobras enquanto estava estacionado." << endl;
 
 	// Devolvendo carros para o estacionamento
 	while (*street != NULL){
