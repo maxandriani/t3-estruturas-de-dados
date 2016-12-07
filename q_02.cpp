@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string>
 
-#define SLOTS 10;
+#define SLOTS 10
 
 struct Car {
 	string plate;
